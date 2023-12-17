@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Post" ALTER COLUMN "createAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
