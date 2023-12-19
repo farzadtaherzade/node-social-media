@@ -10,12 +10,13 @@ class UserController {
     autoBind(this);
     this.#service = UserService;
   }
-  async getMe(req, res, next) {
+  async getUser(req, res, next) {
     try {
-      console.log(req);
       const user = req.user;
+      const { username } = req.params;
+      const result = await this.#service.getUser({ username, user });
       return res.status(200).json({
-        user,
+        user: result,
       });
     } catch (error) {
       next(error);

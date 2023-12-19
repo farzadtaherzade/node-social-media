@@ -4,7 +4,7 @@ const { Authorization } = require("../../common/middlewares/auth.guard");
 const { upload } = require("../../common/utils/multer");
 const router = Router();
 
-router.get("/me", Authorization, UserController.getMe);
+router.get("/:username", Authorization, UserController.getUser);
 router.patch(
   "/upload-profile",
   Authorization,

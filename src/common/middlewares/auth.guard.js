@@ -11,7 +11,6 @@ const Authorization = async (req, res, next) => {
     }
     const data = jwt.verify(token[1], process.env.SECRET_KEY);
     if (data.id) {
-      console.log(data);
       const user = await prisma.user
         .findUnique({
           where: {

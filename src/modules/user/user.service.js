@@ -138,19 +138,6 @@ class UserService {
       });
     return followResult;
   }
-  async upgradeAccount() {}
-
-  async findUser(id) {
-    id = Number(id);
-    const user = await this.#model.user.findFirst({
-      where: {
-        id,
-      },
-    });
-
-    if (!user) throw createHttpError.NotFound("user not found");
-    return user;
-  }
   async isFollowd(userId, followerId) {
     return await this.#model.follow
       .findFirst({
@@ -162,6 +149,32 @@ class UserService {
       .catch((err) => {
         throw createHttpError.InternalServerError(`err`);
       });
+  }
+  async upgradeAccount() {}
+  async getUser({ username, user }) {
+    if (user.username === username) return user;
+    const result = await this.#model.user
+      .findUnique({
+        where: {
+          username,
+        },
+      })
+      .catch((err) => {
+        throw createHttpError.NotFound("user not found");
+      });
+    if (!result) throw createHttpError.NotFound("user not found");
+    return result;
+  }
+  async findUser(id) {
+    id = Number(id);
+    const user = await this.#model.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) throw createHttpError.NotFound("user not found");
+    return user;
   }
 }
 
