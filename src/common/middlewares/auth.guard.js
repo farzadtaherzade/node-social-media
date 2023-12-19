@@ -23,7 +23,6 @@ const Authorization = async (req, res, next) => {
           },
         })
         .catch((err) => {
-          // throw err;
           throw new createHttpError.Unauthorized("account not found!");
         });
       req.user = user;
