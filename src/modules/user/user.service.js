@@ -150,7 +150,6 @@ class UserService {
         throw createHttpError.InternalServerError(`err`);
       });
   }
-  async upgradeAccount() {}
   async getUser({ username, user }) {
     if (user.username === username) return user;
     const result = await this.#model.user
@@ -165,6 +164,7 @@ class UserService {
     if (!result) throw createHttpError.NotFound("user not found");
     return result;
   }
+  async upgradeAccount() {}
   async findUser(id) {
     id = Number(id);
     const user = await this.#model.user.findFirst({

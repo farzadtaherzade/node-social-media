@@ -102,14 +102,28 @@ class postService {
     }
     throw createHttpError.NotFound("post not found!");
   }
-  async all() {
+  async all({ skip = 1, take = 25, search }) {
+    skip = Number(skip);
+    take = Number(take);
+    let where = {
+      published: true,
+    };
+    if (search) {
+      where = {
+        ...where,
+        description: {
+          search,
+        },
+      };
+    }
+    console.log(where);
     const posts = await this.#model.post.findMany({
-      where: {
-        published: true,
-      },
+      skip,
+      take,
+      where,
       orderBy: {
-        createAt: {
-          sort: "asc",
+        ViewPost: {
+          _count: "desc",
         },
       },
     });
@@ -148,7 +162,7 @@ class postService {
         where: {
           postId: post.id,
           userId,
-          id: like.id,  
+          id: like.id,
         },
       })
       .catch((err) => {

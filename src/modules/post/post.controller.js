@@ -78,7 +78,9 @@ class PostController {
   }
   async all(req, res, next) {
     try {
-      const posts = await this.#service.all();
+      const { take, skip, search } = req.query;
+
+      const posts = await this.#service.all({ take, skip, search });
       return res.status(200).json({
         posts,
       });
