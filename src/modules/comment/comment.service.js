@@ -57,6 +57,23 @@ class CommentService {
       });
     if (!result) throw createHttpError.NotFound("comment not found");
   }
+
+  async all({ take = 30, skip = 1, postId }) {
+    skip = Number(skip);
+    take = Number(take);
+    postId = Number(postId);
+    const comment = await this.#model.comment.findMany({
+      where: {
+        postId,
+      },
+      take,
+      skip,
+      include: {
+        author: true,
+      },
+    });
+    return comment;
+  }
 }
 
 module.exports = new CommentService();

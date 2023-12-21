@@ -43,6 +43,20 @@ class CommentController {
       next(err);
     }
   }
+
+  async all(req, res, next) {
+    try {
+      const { take, skip } = req.query;
+      const { postId } = req.params;
+
+      const comments = await this.#service.all({ take, skip, postId });
+      return res.status(200).json({
+        comments,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new CommentController();

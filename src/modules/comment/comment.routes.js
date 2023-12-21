@@ -4,6 +4,7 @@ const commentController = require("./comment.controller");
 const router = Router();
 
 router.post("/add/:id", Authorization, commentController.create);
+router.get("/all/:postId", Authorization, commentController.all);
 router.delete(
   "/delete/:postId/:commentId",
   Authorization,

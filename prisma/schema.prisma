@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -11,13 +11,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+  UNVERIFIED_USER
+}
+
 model User {
   id       Int     @id @default(autoincrement())
   username String  @unique
   email    String? @unique
   phone    Int?    @unique
   password String
-  role     String  @default("USER")
+  role     Role    @default(UNVERIFIED_USER)
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt

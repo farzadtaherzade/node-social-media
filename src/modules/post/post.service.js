@@ -84,7 +84,6 @@ class postService {
         (item) => item.userId === user.id && item.postId === post.id
       );
       if (!isWatched) {
-        console.log("daspjdihas");
         const viewPost = await this.#model.viewPost
           .create({
             data: {
@@ -102,7 +101,7 @@ class postService {
     }
     throw createHttpError.NotFound("post not found!");
   }
-  async all({ skip = 1, take = 25, search }) {
+  async all({ skip = 0, take = 25, search }) {
     skip = Number(skip);
     take = Number(take);
     let where = {

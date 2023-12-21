@@ -8,11 +8,6 @@ const postSchema = Joi.object({
   thumbnail: Joi.allow(),
 });
 
-const postQuerySchema = Joi.object({
-  take: Joi.number(),
-  skip: Joi.number(),
-});
-
 module.exports = {
   postSchema,
 };

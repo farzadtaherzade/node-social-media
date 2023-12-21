@@ -2,9 +2,15 @@ const { Router } = require("express");
 const { UserController } = require("./user.controller");
 const { Authorization } = require("../../common/middlewares/auth.guard");
 const { upload } = require("../../common/utils/multer");
+const { rbacAuthorizaton } = require("../../common/middlewares/rbac.guard");
 const router = Router();
 
-router.get("/:username", Authorization, UserController.getUser);
+router.get(
+  "/:username",
+  Authorization,
+  rbacAuthorizaton("USER"),
+  UserController.getUser
+);
 router.patch(
   "/upload-profile",
   Authorization,
