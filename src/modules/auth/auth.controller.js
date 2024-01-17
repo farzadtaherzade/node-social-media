@@ -27,10 +27,15 @@ class AuthController {
     try {
       const { username, password } = await authSchema.validateAsync(req.body);
       const token = await this.#service.login({ username, password });
-      return res.status(200).json({
-        message: "you loggin tou your account",
-        token,
-      });
+      return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({
+          message: "you loggin to your account",
+        });
     } catch (error) {
       next(error);
     }

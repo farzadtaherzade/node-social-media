@@ -10,13 +10,11 @@ let transporter = nodemailer.createTransport({
 
 const sendEmail = async (text, reciver) => {
   const info = await transporter.sendMail({
-    from: '"Me" <johnnycash@protonmail.com>',
+    from: "social node project",
     to: reciver,
     subject: "Send Confirm Email",
     html: text,
   });
-
-  console.log("Message sent: %s", info.messageId);
 };
 
 module.exports = { sendEmail };

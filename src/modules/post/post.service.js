@@ -11,7 +11,7 @@ class postService {
     this.#model = prisma;
   }
   async create(data, files) {
-    data.tags = data?.tags?.split(" ") || "";
+    data.tags = data?.tags?.split(" ") || [];
     const content = files.content?.map((file) => {
       return file.filename;
     });
@@ -94,8 +94,8 @@ class postService {
           .catch((err) => {
             console.log(err);
           });
-        const newPost = await this.findPost(post.id);
-        return newPost;
+        // const newPost = await this.findPost(post.id);
+        post.ViewPost++;
       }
       return post;
     }
@@ -109,7 +109,7 @@ class postService {
     };
     if (search) {
       where = {
-        ...where,
+        published: true,
         description: {
           search,
         },

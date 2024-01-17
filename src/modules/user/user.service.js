@@ -43,32 +43,37 @@ class UserService {
       });
     return user;
   }
-  async verifyAccount(user, email) {
+  async sendVerfiyToken(user, email) {
     if (user.verifiedEmail)
       throw createHttpError.InternalServerError(
         "your account already verified!"
       );
+    console.log(user);
     const result = await this.#model.user
       .update({
         where: {
           id: user.id,
         },
         data: {
-          email,
+          email: String(email),
         },
       })
       .catch((err) => {
-        throw createHttpError.InternalServerError(err);
+        if (err.code == "P2002")
+          throw createHttpError.BadRequest("email not valid");
       });
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY_EMAIL, {
       expiresIn: "1d",
     });
     const url = `${process.env.URL}/user/verify/${token}`;
+    console.log(
+      `please click this to confirm your email: <a href="${url}">${process.env.URL}</a>`
+    );
     const emailSend = await sendEmail(
       `please click this to confirm your email: <a href="${url}">${process.env.URL}</a>`,
       email
     );
-    return emailSend;
+    return "check your email";
   }
   async verifyToken(token, user) {
     if (!user.email)
@@ -83,6 +88,7 @@ class UserService {
         },
         data: {
           verifiedEmail: true,
+          role: "USER",
         },
       })
       .catch((err) => {
@@ -151,17 +157,21 @@ class UserService {
       });
   }
   async getUser({ username, user }) {
-    if (user.username === username) return user;
     const result = await this.#model.user
       .findUnique({
         where: {
           username,
+        },
+        include: {
+          followers: true,
+          post: true,
         },
       })
       .catch((err) => {
         throw createHttpError.NotFound("user not found");
       });
     if (!result) throw createHttpError.NotFound("user not found");
+    delete result.password;
     return result;
   }
   async upgradeAccount() {}

@@ -42,7 +42,7 @@ router.put(
   ]),
   postController.update
 );
-router.post("/like/:id", Authorization, postController.like);
+router.put("/like/:id", Authorization, postController.like);
 router.delete("/dislike/:id", Authorization, postController.disLike);
 
 router.delete(

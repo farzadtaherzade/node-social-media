@@ -6,6 +6,8 @@ const NotFoundHandler = require("./src/common/exception/not-found.handler");
 const AllExceptionHandler = require("./src/common/exception/all-exception.handler");
 const path = require("path");
 const mainRouter = require("./src/app.routes");
+const swaggerConfig = require("./src/config/swagger.config");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
@@ -14,17 +16,19 @@ const start = async () => {
   const port = process.env.PORT;
 
   //app configs
-  app.use(morgan("dev"));
+  if (process.env.NODE_ENV == "development") app.use(morgan("dev"));
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  swaggerConfig(app);
+  app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
   app.use(mainRouter);
   app.use(express.static(path.join(__dirname, "..", "public")));
   NotFoundHandler(app);
   AllExceptionHandler(app);
 
   app.listen(port, () => {
-    console.log(`server running on port ${port}: http://localhost:${port}`);
+    console.log(`server running on port ${port}: ${process.env.URL}${port}`);
   });
 };
 

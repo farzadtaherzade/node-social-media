@@ -8,7 +8,7 @@ const router = Router();
 router.get(
   "/:username",
   Authorization,
-  rbacAuthorizaton("USER"),
+  rbacAuthorizaton("USER", "ADMIN", "UNVERIFIED_USER"),
   UserController.getUser
 );
 router.patch(
@@ -18,7 +18,7 @@ router.patch(
   UserController.updateProfileImage
 );
 router.put("/update-info", Authorization, UserController.updateInfo);
-router.post("/verify-email", Authorization, UserController.verifyAccount);
+router.post("/verify-email", Authorization, UserController.sendVerfiyToken);
 router.all("/verify/:token", Authorization, UserController.verifyToken);
 router.post("/follow/:follower", Authorization, UserController.followUser);
 router.post("/unfollow/:follower", Authorization, UserController.unFollowUser);

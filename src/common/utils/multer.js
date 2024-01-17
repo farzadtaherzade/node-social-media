@@ -37,7 +37,6 @@ const upload = multer({
         FormatValidation.push(item);
       });
     }
-    console.log(FormatValidation.includes(file.mimetype));
     if (FormatValidation.includes(file.mimetype)) {
       return cb(null, true);
     }

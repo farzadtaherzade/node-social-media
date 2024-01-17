@@ -40,6 +40,8 @@ model User {
   following      Follow[]   @relation("following")
   watched_post   ViewPost[]
   Comment        Comment[]
+
+  @@map("user")
 }
 
 model Follow {
@@ -51,6 +53,8 @@ model Follow {
 
   following   User @relation("following", fields: [followingId], references: [id])
   followingId Int
+
+  @@map("follow")
 }
 
 model Post {
@@ -68,6 +72,8 @@ model Post {
   likes    Likes[]
   ViewPost ViewPost[]
   Comment  Comment[]
+
+  @@map("post")
 }
 
 model Comment {
@@ -79,6 +85,8 @@ model Comment {
 
   Post   Post @relation(fields: [postId], references: [id])
   postId Int
+
+  @@map("comment")
 }
 
 model Likes {
@@ -91,6 +99,7 @@ model Likes {
   userId Int
 
   @@unique([userId, postId])
+  @@map("likes")
 }
 
 model ViewPost {
@@ -105,4 +114,5 @@ model ViewPost {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId])
+  @@map("view_post")
 }

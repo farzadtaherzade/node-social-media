@@ -5,11 +5,10 @@ const jwt = require("jsonwebtoken");
 
 const Authorization = async (req, res, next) => {
   try {
-    const token = req?.headers?.authorization.split(" ");
-    if (!token) {
-      throw new createHttpError.Unauthorized("login to your account");
-    }
-    const data = jwt.verify(token[1], process.env.SECRET_KEY);
+    const token = req?.cookies?.access_token;
+    if (!token) throw new createHttpError.Unauthorized("login to your account");
+
+    const data = jwt.verify(token, process.env.SECRET_KEY);
     if (data.id) {
       const user = await prisma.user
         .findUnique({
@@ -24,6 +23,7 @@ const Authorization = async (req, res, next) => {
         .catch((err) => {
           throw new createHttpError.Unauthorized("account not found!");
         });
+      delete user.password;
       req.user = user;
       return next();
     }

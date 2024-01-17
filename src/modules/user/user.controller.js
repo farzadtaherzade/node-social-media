@@ -58,12 +58,12 @@ class UserController {
       next(error);
     }
   }
-  async verifyAccount(req, res, next) {
+  async sendVerfiyToken(req, res, next) {
     try {
       const { email } = await userSchema.validateAsync(req.body);
       const user = req.user;
 
-      await this.#service.verifyAccount(user, email);
+      await this.#service.sendVerfiyToken(user, email);
 
       res.status(200).json({
         message: "check your email!",

@@ -19,7 +19,7 @@ class AuthService {
         "username already used choose another one"
       );
     });
-    console.log(user);
+
     return user;
   }
   async login({ username, password }) {
@@ -40,8 +40,7 @@ class AuthService {
       id: user.id,
       username: user.username,
     });
-    console.log(user, accessToken);
-
+    
     return accessToken;
   }
   async changePassword(id) {}
@@ -52,8 +51,6 @@ class AuthService {
     const SECRET_KEY = process.env.SECRET_KEY;
     return jwt.sign(payload, SECRET_KEY, option);
   }
-
-  async verifiedAccount() {}
 }
 
 module.exports = new AuthService();

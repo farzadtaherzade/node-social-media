@@ -58,10 +58,12 @@ class CommentService {
     if (!result) throw createHttpError.NotFound("comment not found");
   }
 
-  async all({ take = 30, skip = 1, postId }) {
+  async all({ take = 30, skip = 0, postId }) {
     skip = Number(skip);
     take = Number(take);
     postId = Number(postId);
+    console.log(postId);
+    if (!postId) throw createHttpError.BadRequest("postId is empty");
     const comment = await this.#model.comment.findMany({
       where: {
         postId,
@@ -72,6 +74,7 @@ class CommentService {
         author: true,
       },
     });
+    console.log(comment);
     return comment;
   }
 }
